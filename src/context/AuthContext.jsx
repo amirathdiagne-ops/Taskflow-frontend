@@ -6,7 +6,7 @@ export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState([])
     const [loading, setLoading] = useState(true)
     const [erreur, setErreur] = useState(null)
-    const [accessToken, setAccessToken] = useState(null)
+    const [accessToken, setAccessToken] = useState("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhODU5ZWJlMDQ4MjAxZDFlNTJjMmYzNiIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzg3MjkyMzE0LCJleHAiOjE3ODczNzg3MTR9.vjelnt_bcr4rQoQkJQ21wyfvk7xHG7ZNN6D384Wbu9o")
     const login = async (email, password) => {
         try {
             const response = await API.post('/auth/login', { email, password })
@@ -47,7 +47,6 @@ export const AuthProvider = ({ children }) => {
         try {
             const response = await API.post('/auth/refresh')
             const { accessToken: newAccessToken } = response.data
-            console.log(response.data.accessToken)
             return newAccessToken
         } catch (error) {
             console.error('Erreur lors du rafraichissement du token', error.response?.data?.message || error.message)
@@ -58,16 +57,14 @@ export const AuthProvider = ({ children }) => {
         const checkAuth = async () => {
             try {
                 const newAccessToken = await refreshAccessToken()
-                console.log(newAccessToken)
                 const response = await API.get('/auth/me', {
                     headers : {
                         Authorization : `Bearer ${newAccessToken}`
                     }
                 })
-                console.log(response.data)
                 const { user : userData} = response.data
                 setUser(userData)
-                console.log('le profile est chargé')
+                console.log(response.data.user)
             } catch (error) {
                 setUser(null)
                 setAccessToken(null)

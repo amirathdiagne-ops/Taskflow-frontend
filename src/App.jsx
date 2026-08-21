@@ -10,7 +10,7 @@ function App() {
    <AuthProvider>
      <div>
       <Routes>
-        <Route path='/' element={<h1>Hello world</h1>}/>
+        <Route path='/ff' element={<h1>Hello world</h1>}/>
         <Route path='/login' element={<LoginPage/>}/>
         <Route path='/register' element={<RegisterPage/>} />
         <Route path='/dashboard' element={<Dashboard/>}/>
