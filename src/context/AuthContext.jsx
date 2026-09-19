@@ -6,7 +6,7 @@ export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState([])
     const [loading, setLoading] = useState(true)
     const [erreur, setErreur] = useState(null)
-    const [accessToken, setAccessToken] = useState("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhODU5ZWJlMDQ4MjAxZDFlNTJjMmYzNiIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzg3MjkyMzE0LCJleHAiOjE3ODczNzg3MTR9.vjelnt_bcr4rQoQkJQ21wyfvk7xHG7ZNN6D384Wbu9o")
+    const [accessToken, setAccessToken] = useState(null)
     const login = async (email, password) => {
         try {
             const response = await API.post('/auth/login', { email, password })
@@ -23,7 +23,7 @@ export const AuthProvider = ({ children }) => {
 
     const register = async (name, email, password) => {
         try {
-            const response = await API.post('/auth/register')
+            const response = await API.post('/auth/register', {name, email, password})
             const { user: userData, accessToken: newAccessToken } = response.data
             setUser(userData)
             setAccessToken(newAccessToken)
@@ -47,6 +47,7 @@ export const AuthProvider = ({ children }) => {
         try {
             const response = await API.post('/auth/refresh')
             const { accessToken: newAccessToken } = response.data
+            setAccessToken(newAccessToken)
             return newAccessToken
         } catch (error) {
             console.error('Erreur lors du rafraichissement du token', error.response?.data?.message || error.message)
@@ -64,7 +65,7 @@ export const AuthProvider = ({ children }) => {
                 })
                 const { user : userData} = response.data
                 setUser(userData)
-                console.log(response.data.user)
+                console.log(userData)
             } catch (error) {
                 setUser(null)
                 setAccessToken(null)
