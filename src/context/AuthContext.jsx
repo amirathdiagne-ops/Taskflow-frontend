@@ -7,9 +7,9 @@ export const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(true)
     const [erreur, setErreur] = useState(null)
     const [accessToken, setAccessToken] = useState(null)
-    const login = async (email, password) => {
+    const login = async (data) => {
         try {
-            const response = await API.post('/auth/login', { email, password })
+            const response = await API.post('/auth/login', data)
             const { user: userData, accessToken: newAccessToken } = response.data
             setUser(userData)
             setAccessToken(newAccessToken)
@@ -21,9 +21,9 @@ export const AuthProvider = ({ children }) => {
         }
     }
 
-    const register = async (name, email, password) => {
+    const registerUser = async (data) => {
         try {
-            const response = await API.post('/auth/register', {name, email, password})
+            const response = await API.post('/auth/register', data)
             const { user: userData, accessToken: newAccessToken } = response.data
             setUser(userData)
             setAccessToken(newAccessToken)
@@ -116,7 +116,7 @@ export const AuthProvider = ({ children }) => {
         loading,
         login,
         logout,
-        register
+        registerUser
     }
 
     return <AuthContext.Provider value={authContextValue}>

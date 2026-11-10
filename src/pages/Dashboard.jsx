@@ -2,6 +2,10 @@ import { useEffect, useState } from 'react'
 import API from '../services/api'
 import { useAuth } from '../context/AuthContext'
 import { Link } from 'react-router-dom'
+import TopBar from '@/components/ui/dashboard/Topbar'
+import Main from '@/components/ui/dashboard/Main'
+import LeftBar from '@/components/ui/dashboard/LeftBar'
+import { SidebarProvider } from '@/components/ui/sidebar'
 function Dashboard() {
     const [projects, setProjects] = useState([])
     const [projectsLoading, setProjectsLoading] = useState(true)
@@ -22,10 +26,10 @@ function Dashboard() {
     }
     const handleSubmit = async (e) => {
         e.preventDefault()
-        try {
+        try { 
 
             if (editProjectId) {
-                const response = await API.put(`/project/${editProjectId}`, project)
+                const response = await API.put(`/project/${editProjectId}`, project) 
                 const projectModified = response.data.project
                 const update = projects.map(p => p._id === editProjectId ? projectModified : p)
                 setProjects(update)
@@ -68,7 +72,7 @@ function Dashboard() {
             console.log(currentProjects)
             setProjects(currentProjects)
         } catch (error) {
-            console.error(error.message)
+            console.error(error.message) 
         }
     }
     const handleClick = async (project) => {
@@ -109,75 +113,85 @@ function Dashboard() {
     }
     const handleAddMember = async (userId, projectId) => {
         try {
-            const response = await API.post(`/project/${projectId}/members`, {userId})
+            const response = await API.post(`/project/${projectId}/members`, { userId })
             console.log(response.data.project.members)
-            
-            
+
+
         } catch (error) {
-            
+
         }
     }
     return (
-        <div>
-            <h2>Ceci est ton Dashboard</h2>
-            {projectsLoading && <p>En cours...</p>}
-            {
-                projects.length == 0 ? <p>Votre liste de projets est vide</p> : (
-                    <ul>
-                        {
-                            projects.map(project => (
-                                <li key={project._id}>
-                                    <h2>{project.name} </h2>
-                                    <p>{project.description} </p>
-                                    <p>{project.status} </p>
-                                    <p>{project.owner.name} </p>
 
-                                    <button onClick={() => handleDelete(project._id)}>Supprimer</button>
-                                    <button onClick={() => handleClick(project)}>Modifier</button>
-                                    <Link to={`/tasks/${project._id}`}>Taches du projets</Link>
-                                    <Link to={`/tasks/${project._id}/addTask`}>Ajouter une tâche</Link>
-                                    <button onClick={() => showMembers(project)}>Voir les membres</button>
-                                    <button onClick={() => {showUsers(project)}}>Ajouter membre</button>
-
-                                </li>
-                            ))
-                        }
-                    </ul>
-                )
-
+        /* <div className='bg-amber-300'>
+             <h2>Ceci est ton Dashboard</h2>
+          {projectsLoading && <p>En cours...</p>}
+             {
+              projects.length == 0 ? <p>Votre liste de projets est vide</p> : (
+                      <ul>
+                          {
+                              projects.map(project => (
+                                  <li key={project._id}>
+                                      <h2>{project.name} </h2>
+                                      <p>{project.description} </p>
+                                      <p>{project.status} </p>
+                                      <p>{project.owner.name} </p> 
+  
+                                      <button onClick={() => handleDelete(project._id)}>Supprimer</button>
+                                      <button onClick={() => handleClick(project)}>Modifier</button>
+                                      <Link to={`/tasks/${project._id}`}>Taches du projets</Link>
+                                      <Link to={`/tasks/${project._id}/addTask`}>Ajouter une tâche</Link>
+                                      <button onClick={() => showMembers(project)}>Voir les membres</button>
+                                      <button onClick={() => {showUsers(project)}}>Ajouter membre</button>
+  
+                                  </li>
+                              ))
+                          }
+                      </ul>
+                  )
+  
             }
             <>
-            {members.length !== 0 && <ul>{members.map(m => (
-                <li key={m._id}>
-                  <h5>{m.name} </h5>   
-                </li>
-            ))}</ul>}
+              {members.length !== 0 && <ul>{members.map(m => (
+                  <li key={m._id}>
+                    <h5>{m.name} </h5>   
+                  </li>
+              ))}</ul>}
             </>
             <>
-            {users.length !== 0 && <ul>
-                {users.map(user => (
-                    <li key={user._id}>
-                        <p>{user.name}</p>
-                        <button onClick={() => handleAddMember(user._id, selectedProject._id)}>Ajouter</button>
-                    </li>
-                    
-                ))}
-                </ul>}
-            </>
-        
+              {users.length !== 0 && <ul>
+                  {users.map(user => (
+                      <li key={user._id}>
+                          <p>{user.name}</p>
+                          <button onClick={() => handleAddMember(user._id, selectedProject._id)}>Ajouter</button>
+                      </li>
+                      
+                  ))}
+                  </ul>}
+          </>
+          
             <form onSubmit={handleSubmit}>
-                <input type="text" placeholder='Name' value={project.name} name='name' onChange={handleOnchange} />
-                <input type="text" placeholder='Description' value={project.description} name='description' onChange={handleOnchange} />
-                <select value={project.status} name='status' onChange={handleOnchange}>
-                    <option value="planning">planning</option>
-                    <option value="active">active</option>
-                    <option value="archived">archived</option>
-                    <option value="completed">completed</option>
-                </select>
-                <button type="submit">Enrégistrer</button>
-            </form>
+                  <input type="text" placeholder='Name' value={project.name} name='name' onChange={handleOnchange} />
+                  <input type="text" placeholder='Description' value={project.description} name='description' onChange={handleOnchange} />
+                  <select value={project.status} name='status' onChange={handleOnchange}>
+                      <option value="planning">planning</option>
+                      <option value="active">active</option>
+                      <option value="archived">archived</option>
+                      <option value="completed">completed</option>
+                  </select>
+                  <button type="submit">Enrégistrer</button>
+       </form>
+  
+          </div>
+      )*/
+       <main className='h-screen grid grid-cols-[auto_1fr]'>
+        <LeftBar className=""/>
+        <div className="min-w-0 min-h-0  grid grid-rows-[auto_1fr]">  
+            <TopBar />
+            <Main />   
+        </div> 
+       </main>
 
-        </div>
     )
 }
 

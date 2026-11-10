@@ -1,0 +1,2 @@
+The class `[&_[data-slot=progress-indicator]]:bg-blue-700` can be written as `**:data-[slot=progress-indicator]:bg-blue-700`
+The class `[&_[data-slot=progress-track]]:h-2.5` can be written as `**:data-[slot=progress-track]:h-2.5`
